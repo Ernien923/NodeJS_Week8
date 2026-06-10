@@ -1,0 +1,50 @@
+name: 基礎建設驗收
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+jobs:
+  infra:
+    name: 驗收 Migration 與 Seeder
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+
+      - uses: actions/setup-node@v5
+        with:
+          node-version: 20
+          cache: npm
+          cache-dependency-path: package.json
+
+      - name: 考卷完整性（示範 entity 與示範 migration 不可改）
+        run: shasum -a 256 -c .github/checksums.txt
+
+      - name: 安裝依賴
+        run: npm install
+
+      - name: 起資料庫
+        run: |
+          cp .env.example .env
+          docker compose up -d
+          for i in $(seq 1 30); do
+            docker compose exec -T postgres pg_isready -U student -d livefit > /dev/null 2>&1 && break
+            sleep 2
+          done
+
+      - name: 執行你的 migrations
+        run: npm run migration:run
+
+      - name: 執行你的 seeder
+        run: npm run seed
+
+      - name: 跑驗收
+        run: npx jest --runInBand --json --outputFile=jest-result.json
+
+      - name: 📊 驗收結果總表
+        if: always()
+        run: node .github/scripts/summary.js "基礎建設驗收" jest-result.json
+
+      - name: 🧬 演進探針（revert 後欄位要消失、資料要還在、run 回得來）
+        run: node scripts/verify-evolution.js
