@@ -1,0 +1,28 @@
+{
+  "_readme": "種子資料的唯一真相（考卷的一部分，不可改）。你的 seed.js 要 require 這份檔案，把資料映射進你自己設計的 schema。",
+  "classes": ["忠班", "孝班"],
+  "teachers": [
+    { "name": "王老師", "subject": "數學" },
+    { "name": "林老師", "subject": "英文" }
+  ],
+  "students": [
+    { "name": "小明", "class": "忠班" },
+    { "name": "小華", "class": "忠班" },
+    { "name": "小美", "class": "孝班" },
+    { "name": "阿強", "class": "孝班" }
+  ],
+  "grades": [
+    { "student": "小明", "subject": "數學", "score": 95, "retake_score": null },
+    { "student": "小明", "subject": "英文", "score": 85, "retake_score": null },
+    { "student": "小華", "subject": "數學", "score": 75, "retake_score": null },
+    { "student": "小華", "subject": "英文", "score": 93, "retake_score": null },
+    { "student": "小美", "subject": "數學", "score": 81, "retake_score": null },
+    { "student": "小美", "subject": "英文", "score": 88, "retake_score": null },
+    { "student": "阿強", "subject": "數學", "score": 57, "retake_score": 71 }
+  ],
+  "_notes": [
+    "阿強的英文「缺考」——種子裡沒有這筆，之後由 POST /api/grades 補登（這就是任務 4 的劇情）",
+    "阿強數學 57 不及格，補考 71（retake_score）——這筆資料要等你的演進 migration 之後才種得進去",
+    "分數全部是整數，且每班每科的平均也都是整數（補考以補考分數計）——方便你自己驗算"
+  ]
+}
