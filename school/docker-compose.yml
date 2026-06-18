@@ -9,12 +9,3 @@ services:
       PGTZ: Asia/Taipei
     ports:
       - "${DB_PORT:-5433}:5432"
-
-  swagger-ui:
-    image: swaggerapi/swagger-ui:v5.17.14
-    environment:
-      SWAGGER_JSON: /openapi.yaml
-    volumes:
-      - ./openapi.yaml:/openapi.yaml:ro
-    ports:
-      - "8081:8080"
