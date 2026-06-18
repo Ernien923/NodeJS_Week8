@@ -1,10 +1,9 @@
 require('dotenv').config()
 const { DataSource } = require('typeorm')
 
-const CreditPackage = require('../entities/CreditPackage')
 // ============================================================
-// TODO（任務 1、2 完成後）：把你的 entity require 進來，
-// 並加進下面的 entities 陣列——沒註冊的 entity，migration:generate 看不見
+// TODO：把你設計的 entity require 進來、加進 entities 陣列
+//（沒註冊的 entity，migration:generate 看不見）
 // ============================================================
 
 const dataSource = new DataSource({
@@ -15,13 +14,11 @@ const dataSource = new DataSource({
   password: process.env.DB_PASSWORD || 'student666',
   database: process.env.DB_DATABASE || 'livefit',
 
-  // ⚠️ 本專案的鐵律：結構一律走 Migration，synchronize 永遠是 false
-  //（上週的事故就是 synchronize 幹的——詳見 README 的案發紀錄）
+  // ⚠️ 鐵律：結構一律走 Migration，synchronize 永遠是 false
   synchronize: false,
 
   entities: [
-    CreditPackage,
-    // TODO: User, Skill, Course
+    // TODO: 你的 entities
   ],
   migrations: ['db/migrations/*.js'],
 })

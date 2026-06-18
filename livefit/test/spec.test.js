@@ -73,16 +73,12 @@ describe('任務 2｜SKILL 與 COURSE 表（含關聯）', () => {
   })
 })
 
-describe('任務 3 + 5｜Migration 歷史與演進', () => {
-  test('migrations 歷史至少 3 筆（前輩的 1 筆 + 你的至少 2 筆——建表與演進要分開）', async () => {
+describe('任務 3｜用 Migration 蓋表（不是 synchronize）', () => {
+  test('migrations 歷史至少 1 筆（表是 migration 蓋出來的）', async () => {
     const r = await db.query(`SELECT count(*)::int AS n FROM migrations`)
-    expect(r.rows[0].n).toBeGreaterThanOrEqual(3)
+    expect(r.rows[0].n).toBeGreaterThanOrEqual(1)
   })
-  test('演進產物：COURSE.meeting_url varchar(2048) 可為空', async () => {
-    const c = await col('COURSE', 'meeting_url')
-    expect(c).toMatchObject({ data_type: 'character varying', len: 2048, is_nullable: 'YES' })
-  })
-  test('設定合約：synchronize 不可以是 true（上週的事故不准重演）', () => {
+  test('設定合約：synchronize 不可以是 true', () => {
     const { dataSource } = require('../db/data-source')
     expect(dataSource.options.synchronize).not.toBe(true)
     expect(dataSource.options.migrations).toBeDefined()

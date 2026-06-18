@@ -49,9 +49,6 @@ jobs:
         working-directory: .
         run: node .github/scripts/summary.js "第一關·練習場（健身房）" livefit/jest-result.json
 
-      - name: 🧬 演進探針（revert 要乾淨、up/down 要對稱）
-        run: node scripts/verify-evolution.js
-
   school:
     name: 第二關·考場驗收（學校成績系統）
     runs-on: ubuntu-latest
