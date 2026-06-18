@@ -1,6 +1,6 @@
 # 🏗️ W8 基礎建設週 — LiveFit v2：Migration 上線
 
-> 🏋️ **這裡是練習場**（課堂跟做，不評分）：照下面的規格把 LiveFit v2 的三張表蓋起來，
+> 🏋️ **這裡是第一關·練習場**（課堂跟做，**要評分**——這份作業兩關都要全綠才算過）：照下面的規格把 LiveFit v2 的三張表蓋起來，
 > 練熟 entity / migration / seeder / 演進。**考場（`../school/`）的每一招都在這裡先出現。**
 > 弄壞了不用怕：`git checkout -- .` 還原、`npm run db:reset` 重開資料庫。
 > 全部做完後，跑 `node playground/queries.js` 把六招 repository 查詢練過一輪再進考場。
