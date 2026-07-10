@@ -1,6 +1,7 @@
 /**
- * 任務 5：Seeder —— 種一點資料，證明你的表真的能用。
- * 規則：可重複執行（先清空、再種入），跑兩次資料不會翻倍。
+ * 任務 5：Seeder，種一些資料，證明你建立的資料表真的能使用。
+ * 規則：可重複執行（先清空、再種入資料），即使執行多次也不會有資料疊加的狀況。
+ * 執行順序：一定要先 npm run migration:run（沒有資料表，就無法種資料）
  */
 const { dataSource } = require('./data-source')
 
@@ -21,13 +22,15 @@ async function main() {
   await dataSource.initialize()
   await clearAll()
 
-  // ============================================================
-  // TODO：種資料（至少 2 班、2 科、幾個學生、幾筆成績）
+  // ================================================================================
+  // TODO：依照任務內容的規格種資料（至少 2 班、2 科目、幾位學生、幾筆成績）
   //   1. 先種 CLASS / SUBJECT
-  //   2. 再種 STUDENT（接上 class）
-  //   3. 最後種 GRADE（接上 student + subject）
-  //   relation 種法：repo.save({ ..., 你的relation屬性: 已存在的物件 })
-  // ============================================================
+  //   2. 再種 STUDENT（記得接上 class）
+  //   3. 最後種 GRADE（記得接上 student + subject）
+  //      關聯的接法：relation 屬性直接放前面存好的物件（TypeORM 會自動取出 id 填進外鍵），例如：
+  //      studentRepo.save({ name: '...', class: 班級物件 })
+  //      gradeRepo.save({ score: 95, student: 學生物件, subject: 科目物件 })
+  // ================================================================================
 
   console.log('🌱 seed 完成')
   await dataSource.destroy()

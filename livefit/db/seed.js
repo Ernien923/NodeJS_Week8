@@ -1,7 +1,7 @@
 /**
- * 任務 4：Seeder —— 種一點資料，證明你的表真的能用。
- * 規則：可重複執行（先清空、再種入），跑兩次資料不會翻倍。
- * 執行順序：一定要先 npm run migration:run（表都還沒有，種什麼）
+ * 任務 4：Seeder，種一些資料，證明你建立的資料表真的能使用。
+ * 規則：可重複執行（先清空、再種入資料），即使執行多次也不會有資料疊加的狀況。
+ * 執行順序：一定要先 npm run migration:run（沒有資料表，就無法種資料）
  */
 const { dataSource } = require('./data-source')
 
@@ -19,13 +19,17 @@ async function main() {
   await dataSource.initialize()
   await clearAll()
 
-  // ============================================================
-  // TODO：照規格種資料（規格見 README）
+  // ======================================================================
+  // TODO：依照任務內容的規格寫入資料
   //   1. SKILL 三筆：重訓、瑜珈、飛輪
-  //   2. USER 兩位教練（role 'COACH'）：coach1@livefit.tw、coach2@livefit.tw
-  //   3. COURSE 四堂課，每堂接上教練與技能
-  //   relation 種法：courseRepo.save({ name: '...', User: 教練, Skill: 技能 })
-  // ============================================================
+  //   2. USER 兩位教練，role 都為 'COACH'：
+  //      海格教練（coach1@livefit.tw）、小美教練（coach2@livefit.tw）
+  //   3. COURSE 四堂課：肌力入門班、週末飛輪、晨間瑜珈、核心特訓
+  //      每堂課記得接上教練跟技能
+  //      關聯的接法：user / skill 直接放前面存好的教練、技能物件
+  //     （TypeORM 會自動取出它的 id 填進外鍵），寫法範例：
+  //      courseRepo.save({ name: '...', user: 教練物件, skill: 技能物件 })
+  // ======================================================================
 
   console.log('🌱 seed 完成')
   await dataSource.destroy()

@@ -16,8 +16,8 @@ if (!fs.existsSync(file)) {
   md = [
     `## 🛑 ${title}：測試沒有執行`,
     '',
-    '通常是資料庫沒起來、migration 沒跑、或 seed 失敗。',
-    '往上看「起資料庫」「執行你的 migrations」「執行你的 seeder」step 的錯誤訊息。',
+    '通常是資料庫沒起來、migration 沒跑、seed 失敗、考卷完整性未通過。',
+    '往上點擊可進一步看看 step 的錯誤範圍（例如：「執行你的 migrations」）跟相關錯誤訊息。',
     '',
   ].join('\n');
 } else {
@@ -51,7 +51,7 @@ if (!fs.existsSync(file)) {
         .join('\n');
       md += `\n<details><summary>❌ ${t.fullName || t.title}</summary>\n\n\`\`\`\n${msg}\n\`\`\`\n\n</details>\n`;
     }
-    md += '\n> 三步自救：讀上面的失敗原因 → 本機 `npm test` 重現 → 對照 openapi.yaml（localhost:8081）檢查回應形狀。\n';
+    md += '\n> 三步自救：讀上面的失敗原因 → 本機 npm test 重現 → 對照任務說明的規格，來檢查欄位型別、外鍵、種子資料等。\n';
   }
 }
 
