@@ -51,15 +51,22 @@ describe('任務 1｜USER 表', () => {
 })
 
 describe('任務 2｜SKILL 與 COURSE 表（含關聯）', () => {
-  test('SKILL 表存在且 name varchar(50) 唯一', async () => {
-    expect(await col('SKILL', 'name')).toMatchObject({ data_type: 'character varying', len: 50 })
+  test('SKILL 表存在且 name varchar(50) 必填且唯一', async () => {
+    expect(await col('SKILL', 'name')).toMatchObject({ data_type: 'character varying', len: 50, is_nullable: 'NO' })
+    const u = await db.query(`
+      SELECT 1 FROM information_schema.table_constraints tc
+      JOIN information_schema.key_column_usage k USING (constraint_name)
+      WHERE tc.table_name='SKILL' AND tc.constraint_type='UNIQUE' AND k.column_name='name'`)
+    expect(u.rows.length).toBe(1)
   })
-  test('COURSE 欄位規格：name varchar(100)、description text 必填、start_at / end_at、max_participants', async () => {
-    expect(await col('COURSE', 'name')).toMatchObject({ data_type: 'character varying', len: 100 })
+  test('COURSE 欄位規格：name varchar(100) 必填、description text 必填、start_at / end_at 都在、max_participants integer 必填、created_at / updated_at 都在', async () => {
+    expect(await col('COURSE', 'name')).toMatchObject({ data_type: 'character varying', len: 100, is_nullable: 'NO' })
     expect(await col('COURSE', 'description')).toMatchObject({ data_type: 'text', is_nullable: 'NO' })
     expect(await col('COURSE', 'start_at')).toBeDefined()
     expect(await col('COURSE', 'end_at')).toBeDefined()
-    expect(await col('COURSE', 'max_participants')).toMatchObject({ data_type: 'integer' })
+    expect(await col('COURSE', 'max_participants')).toMatchObject({ data_type: 'integer', is_nullable: 'NO' })
+    expect(await col('COURSE', 'created_at')).toBeDefined()
+    expect(await col('COURSE', 'updated_at')).toBeDefined()
   })
   test('關聯：COURSE.user_id → USER.id、COURSE.skill_id → SKILL.id 兩條 FK（不看名字，看關係）', async () => {
     const fks = await db.query(`
