@@ -1,3 +1,6 @@
+volumes:
+  pgData:
+
 services:
   postgres:
     image: postgres:16.4-alpine3.20
@@ -7,5 +10,12 @@ services:
       POSTGRES_DB: school
       TZ: Asia/Taipei
       PGTZ: Asia/Taipei
+    volumes:
+      - pgData:/var/lib/postgresql/data
     ports:
       - "${DB_PORT:-5433}:5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U student -d school"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
