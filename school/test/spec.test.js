@@ -58,8 +58,9 @@ describe('任務 2｜STUDENT 表（含班級關聯）', () => {
   test('STUDENT.name varchar(50) 必填', async () => {
     expect(await col('STUDENT', 'name')).toMatchObject({ data_type: 'character varying', len: 50, is_nullable: 'NO' })
   })
-  test('STUDENT.class_id → CLASS.id 一條 FK', async () => {
+  test('STUDENT.class_id → CLASS.id 一條 FK，且 class_id 必填', async () => {
     expect(await fkPairs('STUDENT')).toEqual(['class_id->CLASS.id'])
+    expect(await col('STUDENT', 'class_id')).toMatchObject({ is_nullable: 'NO' })
   })
 })
 
@@ -67,8 +68,10 @@ describe('任務 3｜GRADE 表（學生 × 科目的多對多接法）', () => {
   test('GRADE.score integer 必填', async () => {
     expect(await col('GRADE', 'score')).toMatchObject({ data_type: 'integer', is_nullable: 'NO' })
   })
-  test('GRADE 兩條 FK：student_id → STUDENT.id、subject_id → SUBJECT.id', async () => {
+  test('GRADE 兩條 FK：student_id → STUDENT.id、subject_id → SUBJECT.id，且皆必填', async () => {
     expect(await fkPairs('GRADE')).toEqual(['student_id->STUDENT.id', 'subject_id->SUBJECT.id'])
+    expect(await col('GRADE', 'student_id')).toMatchObject({ is_nullable: 'NO' })
+    expect(await col('GRADE', 'subject_id')).toMatchObject({ is_nullable: 'NO' })
   })
 })
 
